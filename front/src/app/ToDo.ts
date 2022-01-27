@@ -1,6 +1,6 @@
-export interface ToDo {
+export class ToDo {
     id?: number;
-    text:string;
-    day: string;
-    reminder: boolean;
+    name?:string;
+    day?: string;
+    reminder?: boolean;
 }
