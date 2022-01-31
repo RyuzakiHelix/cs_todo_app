@@ -1,9 +1,29 @@
 using Microsoft.EntityFrameworkCore;
+using System.Web.Http.Cors;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+//dotnet watch run
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CORS",
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                      });
+});
+
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+
+app.UseCors("CORS");
+
+/*
+builder.Services.AddCors();
+
+app.UseCors(options=>options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+*/
 app.MapGet("/", () => "Hello World!!");
 
 app.MapGet("/todoitems", async (TodoDb db) =>
@@ -33,6 +53,7 @@ app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, TodoDb db) =>
     if (todo is null) return Results.NotFound();
 
     todo.Name = inputTodo.Name;
+    todo.Day = inputTodo.Day;
     todo.Reminder = inputTodo.Reminder;
 
     await db.SaveChangesAsync();

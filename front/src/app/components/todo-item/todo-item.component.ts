@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToDo } from 'src/app/ToDo';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,12 +8,26 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./todo-item.component.css']
 })
 export class TodoItemComponent implements OnInit {
-  @Input() todo!: ToDo;
+  @Input() todo?: ToDo;
+  @Output() onDeleteTodo: EventEmitter<ToDo> = new EventEmitter();
+  @Output() onToggleReminder: EventEmitter<ToDo> = new EventEmitter();
   faTimes = faTimes;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onClickDelete(todo?:ToDo) {
+    console.log(todo);
+    console.log("ovo radi onClickDelete");
+    this.onDeleteTodo.emit(todo);
+  }
+  onToggle(todo?:ToDo) {
+    console.log(todo);
+    console.log("ovo radi onClickToggle");
+    this.onToggleReminder.emit(todo);
+
   }
 
 }

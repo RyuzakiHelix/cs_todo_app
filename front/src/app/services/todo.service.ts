@@ -1,24 +1,39 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable, observable, of} from 'rxjs';
-import { ListToDo } from '../mock-ToDo';
+import {Observable, BehaviorSubject} from 'rxjs';
 import { ToDo } from '../ToDo';
 
+const httpOptions ={
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class TodoService {
 
   constructor(private http:HttpClient) { }
 
   readonly apiURL='https://localhost:7221/todoitems';
+  readonly apiURL2='http://localhost:5097/todoitems';
   formData: ToDo = new ToDo();
 
   getListToDo(): Observable<ToDo[]>{
-   // return this.http.get<ToDo[]>(this.apiURL);
-    
-    const Listtodo= of(ListToDo);
-    return Listtodo;
-    
+    return this.http.get<ToDo[]>(this.apiURL);
   }
+
+  deleteToDo(todo:ToDo): Observable<ToDo>{
+    const apiDURL=`${this.apiURL}/${todo.id}`;
+    return this.http.delete<ToDo>(apiDURL);
+  }
+  addToDo(todo:ToDo): Observable<ToDo>{
+    return this.http.post<ToDo>(this.apiURL, todo, httpOptions);
+  }
+  toggleToDo(todo:ToDo): Observable<ToDo>{
+    const apiDURL=`${this.apiURL}/${todo.id}`;
+    return this.http.put(apiDURL,todo, httpOptions);
+  }
+
 }

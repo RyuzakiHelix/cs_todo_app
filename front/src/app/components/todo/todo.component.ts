@@ -19,4 +19,24 @@ export class TodoComponent implements OnInit {
     this.todoService.getListToDo().subscribe((listtodo) => this.listtodo=listtodo );
   }
 
+  deleteTodo(todo:ToDo){
+    console.log("delete");
+    console.log(todo);
+    this.todoService.deleteToDo(todo).subscribe(() => this.listtodo= this.listtodo.filter(t => t.id !== todo.id));
+
+  }
+  addToDo(todo:ToDo){
+    console.log("add");
+    console.log(todo);
+    this.todoService.addToDo(todo).subscribe((todo) => this.listtodo.push(todo));
+  }
+  
+  toggleTodo(todo:ToDo){
+    todo.reminder = !todo.reminder;
+    console.log("toggle");
+    console.log(todo);
+    this.todoService.toggleToDo(todo).subscribe();
+
+  }
+
 }

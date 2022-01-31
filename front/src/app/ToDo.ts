@@ -1,6 +1,6 @@
 export class ToDo {
     id?: number;
     name?:string;
-    day?: string;
-    reminder?: boolean;
+    day?:string;
+    reminder?:boolean;
 }
