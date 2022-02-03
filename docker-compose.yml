@@ -1,0 +1,12 @@
+version: '2' # specify docker-compose version
+
+services:
+  angular: 
+    build: front 
+    ports:
+      - "8080:80" 
+
+  dotnet: 
+    build: back_dotnet/ToDo 
+    ports:
+      - "7221:80" 

@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+
+COPY ["ToDo.csproj", "./"]
+RUN dotnet restore "./ToDo.csproj"
+
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "ToDo.csproj" -c Release -o /app/build
+FROM build AS publish
+RUN dotnet publish "ToDo.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ToDo.dll"]
+#docker run -ti --rm -p 7221:80 ryuzakihelix/sample-dotnetwebapi-app-image
+#fixat port na 7221 radi front service koji se veze na localhost 7221
