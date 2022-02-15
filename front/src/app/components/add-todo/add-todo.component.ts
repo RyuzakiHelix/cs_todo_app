@@ -27,7 +27,7 @@ export class AddTodoComponent implements OnInit {
     console.log("test");
     if(!this.name || !this.day){
       alert("Fill up the form");
-    }
+    }else{
     const newToDo = {
       name:this.name,
       day:this.day,
@@ -38,6 +38,7 @@ export class AddTodoComponent implements OnInit {
     this.name="";
     this.day="";
     this.reminder=false;
+    }
   }
 
 }

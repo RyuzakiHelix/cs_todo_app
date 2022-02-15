@@ -6,7 +6,7 @@ front/dist
 front/tmp
 front/out-tsc
 front/bazel-out
-
+front/.angular
 # Node
 front/node_modules
 front/npm-debug.log
