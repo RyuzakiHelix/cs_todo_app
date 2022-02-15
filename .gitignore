@@ -12,4 +12,9 @@ front/node_modules
 front/npm-debug.log
 front/yarn-error.log
 
+#dotnet
+back_dotnet/ToDo/bin
+back_dotnet/ToDo/obj
+[Bb]in/
+[Oo]bj/
 
