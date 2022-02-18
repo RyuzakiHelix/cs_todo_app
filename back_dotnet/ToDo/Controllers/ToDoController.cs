@@ -22,14 +22,14 @@ namespace ToDo.Controllers
             _context = context;
         }
 
-        // GET: api/ToDo
+        // GET: obavezno http /todoitems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Todo>>> GetTodos()
         {
             return await _context.Todos.ToListAsync();
         }
 
-        // GET: api/ToDo/5
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Todo>> GetTodo(int id)
         {
@@ -43,8 +43,7 @@ namespace ToDo.Controllers
             return todo;
         }
 
-        // PUT: api/ToDo/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodo(int id, Todo todo)
         {
@@ -74,8 +73,7 @@ namespace ToDo.Controllers
             return NoContent();
         }
 
-        // POST: api/ToDo
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPost]
         public async Task<ActionResult<Todo>> PostTodo(Todo todo)
         {
@@ -83,9 +81,18 @@ namespace ToDo.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTodo", new { id = todo.Id }, todo);
+
+            /*
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "WriteTodo.txt")))
+            {
+                outputFile.WriteLine(todo);
+                
+            }
+            */
         }
 
-        // DELETE: api/ToDo/5
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(int id)
         {

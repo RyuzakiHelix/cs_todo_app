@@ -1,10 +1,70 @@
 services:
-  angular: 
+#Front
+  angular:
+    container_name: front_angular
     build: front 
     ports:
-      - "8080:80" 
+      - "8080:80"
+    #networks:
+     # - network 
 
-  dotnet: 
+#back
+  dotnet:
+    container_name: server_dotnet 
     build: back_dotnet/ToDo 
     ports:
-      - "7221:80" 
+      - "7221:80"
+    #depends_on:
+        # db:
+           # condition: service_healthy
+    #networks:
+     # - network
+
+#database
+  db:
+    image: postgres
+    container_name: postgresdb
+    #healthcheck:
+     # test: [ "CMD", "pg_isready", "-q", "-d", "tododb", "-U", "postgres" ]
+     # timeout: 45s
+     # interval: 10s
+     # retries: 10
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tododb
+      APP_DB_USER: postgres
+      APP_DB_PASS: postgres
+      APP_DB_NAME: tododb
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d/
+    #networks:
+     # - network
+     
+#database managment
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    #networks:
+     # - network
+
+#networks:
+  #network:
+   # driver: bridge
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
