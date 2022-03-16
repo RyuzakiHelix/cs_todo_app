@@ -12,6 +12,7 @@ import { ButtonComponent } from './components/button/button.component';
 import { TodoComponent } from './components/todo/todo.component';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import { AddTodoComponent } from './components/add-todo/add-todo.component';
+import { CounterComponent } from './components/counter/counter.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AddTodoComponent } from './components/add-todo/add-todo.component';
     ButtonComponent,
     TodoComponent,
     TodoItemComponent,
-    AddTodoComponent
+    AddTodoComponent,
+    CounterComponent
   ],
   imports: [
     BrowserModule,
