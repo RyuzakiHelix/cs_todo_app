@@ -24,14 +24,14 @@ export class TodoService {
   ListToDo: ToDo[]=[];
 
   private todos = new BehaviorSubject<ToDo[]>(this.ListToDo);
-  private todos$ = this.todos.asObservable();
+  public todos$ = this.todos.asObservable();
 
   getListToDo(): Observable<ToDo[]>{
     return this.http.get<ToDo[]>(this.apiURL).pipe(
       tap(response =>{
         this.todos.next(response)
       })
-    ); 
+    );
   }
 
   deleteToDo(todo:ToDo): Observable<ToDo>{

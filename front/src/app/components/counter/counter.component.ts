@@ -17,11 +17,11 @@ export class CounterComponent implements OnChanges  {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    this.numberOfTodos = this.todoService.getListToDo().pipe(
+    this.numberOfTodos = this.todoService.todos$.pipe(
       map(todoList => todoList.length)
     )
 
-    this.numberOfReminders = this.todoService.getListToDo().pipe(
+    this.numberOfReminders = this.todoService.todos$.pipe(
       map(todoList => todoList.filter(todo => todo.reminder == true)),
       map(todoList => todoList.length)
     )
