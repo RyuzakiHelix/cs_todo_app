@@ -1,6 +1,6 @@
-import { Component, OnInit,Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import {ToDo} from '../../ToDo';
-import { map, Observable, Subscription } from 'rxjs';
+import { filter, map, Observable } from 'rxjs';
 import {TodoService} from '../../services/todo.service';
 @Component({
   selector: 'app-counter',
@@ -8,31 +8,23 @@ import {TodoService} from '../../services/todo.service';
   styleUrls: ['./counter.component.css']
 })
 export class CounterComponent implements OnChanges  {
-  all : number=0;
-  countreminder: number = 0;
-  total : Observable<number> = new Observable<number>();
-  subscription: Subscription = new Subscription;
-  @Input() listtodo = new Observable<ToDo[]>();
 
-  constructor(private todoService: TodoService) { 
-   this.listtodo=todoService.getListToDo(); 
+  numberOfTodos: Observable<number> = new Observable<number>();
+  numberOfReminders: Observable<number> = new Observable<number>();
+
+  constructor(private todoService: TodoService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    this.countreminder = 0;
-    this.total=this.listtodo.pipe(
-      map(lista=>{
-        lista.forEach(todo=>{
-          this.countreminder += todo.reminder ? 1:0;
-        });
-        return lista.length;
-      })
+    this.numberOfTodos = this.todoService.getListToDo().pipe(
+      map(todoList => todoList.length)
     )
 
-    this.total.subscribe(val => {
-      this.all=val;
-    });
+    this.numberOfReminders = this.todoService.getListToDo().pipe(
+      map(todoList => todoList.filter(todo => todo.reminder == true)),
+      map(todoList => todoList.length)
+    )
   }
 
 }
