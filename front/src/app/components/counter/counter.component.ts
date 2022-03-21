@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {ToDo} from '../../ToDo';
 import { filter, map, Observable } from 'rxjs';
 import {TodoService} from '../../services/todo.service';
@@ -7,7 +7,7 @@ import {TodoService} from '../../services/todo.service';
   templateUrl: './counter.component.html',
   styleUrls: ['./counter.component.css']
 })
-export class CounterComponent implements OnChanges  {
+export class CounterComponent implements OnInit  {
 
   numberOfTodos: Observable<number> = new Observable<number>();
   numberOfReminders: Observable<number> = new Observable<number>();
@@ -15,7 +15,7 @@ export class CounterComponent implements OnChanges  {
   constructor(private todoService: TodoService) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit(): void {
 
     this.numberOfTodos = this.todoService.todos$.pipe(
       map(todoList => todoList.length)

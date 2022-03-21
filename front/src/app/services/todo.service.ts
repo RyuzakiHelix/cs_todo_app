@@ -21,15 +21,15 @@ export class TodoService {
   readonly apiURL2='http://localhost:5097/todoitems';
   formData: ToDo = new ToDo();
 
-  ListToDo: ToDo[]=[];
+  ListToDo: ToDo[]= [];
 
-  private todos = new BehaviorSubject<ToDo[]>(this.ListToDo);
+  public todos = new BehaviorSubject<ToDo[]>(this.ListToDo);
   public todos$ = this.todos.asObservable();
 
   getListToDo(): Observable<ToDo[]>{
     return this.http.get<ToDo[]>(this.apiURL).pipe(
       tap(response =>{
-        this.todos.next(response)
+        this.todos.next(response);
       })
     );
   }

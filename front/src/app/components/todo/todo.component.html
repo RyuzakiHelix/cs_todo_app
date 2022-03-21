@@ -1,6 +1,6 @@
 <app-add-todo (onAddToDo)="addToDo($event)"></app-add-todo>
 <h2>List ToDo</h2>
-<app-counter [listtodo]="listtodo"></app-counter>
+<app-counter></app-counter>
 <app-todo-item *ngFor="let todo of listtodo | async" 
 [todo]="todo" 
 (onDeleteTodo)="deleteTodo(todo)"
