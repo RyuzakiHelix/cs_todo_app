@@ -1,4 +1,5 @@
 <header>
     <h1>{{title}}</h1>
     <app-button color="{{showAddToDo ? 'red': '#191970'}}" text="{{showAddToDo ? 'Close Add': 'Add ToDo'}}" (btnClick)="AddTask()"></app-button>
+    <button [ngStyle]="{'background-color': '#191970'}" class="btn"><a routerLink="/todo-list" routerLinkActive="active">Show list</a></button>
 </header>

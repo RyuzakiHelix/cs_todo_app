@@ -13,6 +13,7 @@ import { TodoComponent } from './components/todo/todo.component';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import { AddTodoComponent } from './components/add-todo/add-todo.component';
 import { CounterComponent } from './components/counter/counter.component';
+import { TodoDetailsComponent } from './components/todo-details/todo-details.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CounterComponent } from './components/counter/counter.component';
     TodoComponent,
     TodoItemComponent,
     AddTodoComponent,
-    CounterComponent
+    CounterComponent,
+    TodoDetailsComponent
   ],
   imports: [
     BrowserModule,

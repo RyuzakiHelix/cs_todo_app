@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable, BehaviorSubject, tap} from 'rxjs';
+import {Observable, BehaviorSubject, tap, map} from 'rxjs';
 import { ToDo } from '../ToDo';
 
 const httpOptions ={
@@ -31,6 +31,12 @@ export class TodoService {
       tap(response =>{
         this.todos.next(response);
       })
+    );
+  }
+
+  getToDo(id: number | string){
+    return this.getListToDo().pipe(
+      map(todolist => todolist.find(todo => todo.id === +id)!)
     );
   }
 

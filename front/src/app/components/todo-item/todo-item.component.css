@@ -1,15 +1,15 @@
-.task {
+.todo {
     background: #28282B;
     margin: 5px;
     padding: 10px 20px;
     cursor: pointer;
   }
   
-  .task.reminder {
+  .todo.reminder {
     border-left: 5px solid green;
   }
   
-  .task h3 {
+  .todo h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;

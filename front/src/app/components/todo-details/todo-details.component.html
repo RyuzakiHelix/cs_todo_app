@@ -1,0 +1,8 @@
+<h2>Todo details</h2>
+<div *ngIf="Todo$ | async as todo">
+    <h3>Id: {{ todo.id }}</h3>
+    <h3>Name: {{ todo.name }}</h3>
+    <h3>Day: {{ todo.day }}</h3>
+    <h3>Reminder: {{ todo.reminder }}</h3>
+</div>
+<h4><a routerLink="/" routerLinkActive="active">go back</a></h4>

@@ -36,12 +36,6 @@ export class TodoComponent implements OnInit {
     );
   }
 
-  addToDo(todo:ToDo){
-    this.todoService.addToDo(todo).pipe(
-      mergeMap(addToDoResult => this.todoService.getListToDo()))
-      .subscribe()
-  }
-
   toggleTodo(todo:ToDo){
     todo.reminder = !todo.reminder;
     this.todoService.toggleToDo(todo).pipe(
