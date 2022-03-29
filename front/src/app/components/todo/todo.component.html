@@ -1,7 +1,9 @@
 <h2>List ToDo</h2>
 <app-counter></app-counter>
-<app-todo-item *ngFor="let todo of listtodo | async" 
+<div class="todo-list">
+<app-todo-item *ngFor="let todo of listtodo | async"
 [todo]="todo" 
 (onDeleteTodo)="deleteTodo(todo)"
 (onToggleReminder)="toggleTodo(todo)"
 ></app-todo-item>
+</div>
