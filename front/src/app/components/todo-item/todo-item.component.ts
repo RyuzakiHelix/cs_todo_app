@@ -12,6 +12,7 @@ export class TodoItemComponent implements OnInit {
   @Output() onDeleteTodo: EventEmitter<ToDo> = new EventEmitter();
   @Output() onToggleReminder: EventEmitter<ToDo> = new EventEmitter();
   faTimes = faTimes;
+  progress = 0;
 
   constructor() { }
 
@@ -27,7 +28,13 @@ export class TodoItemComponent implements OnInit {
     console.log(todo);
     console.log("ovo radi onClickToggle");
     this.onToggleReminder.emit(todo);
+  }
 
+  onHoldDelete(event:number, todo?:ToDo) {
+    this.progress = event / 10;
+    if (this.progress > 100) {
+      this.onDeleteTodo.emit(todo);
+    }
   }
 
 }

@@ -1,16 +1,20 @@
 .todo {
-    background: #28282B;
-    margin: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  .todo.reminder {
-    border-left: 5px solid green;
-  }
-  
-  .todo h3 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  background: #28282b;
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.todo.reminder {
+  border-left: 5px solid green;
+}
+
+.todo h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+progress::-webkit-progress-value {
+  transition: 0.1s all ease;
+}

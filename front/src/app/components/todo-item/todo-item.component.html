@@ -4,5 +4,7 @@
     </h3>
     <p>{{todo?.day}}</p>
     <h4 (click)="onToggle(todo)">Press Here To Toggle Reminder</h4>
+    <button class="btn" appHoldable (HoldTime)="onHoldDelete($event, todo)">Hold to Delete</button>
+    <progress class="progress is-danger" [value]="progress" max="100"></progress>
     <h4><a [routerLink]="['/todo-details', todo?.id]" routerLinkActive="active">Details</a></h4>
 </div>
