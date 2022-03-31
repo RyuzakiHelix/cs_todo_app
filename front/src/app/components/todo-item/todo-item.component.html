@@ -1,4 +1,4 @@
-<div [ngClass]="{reminder: todo?.reminder}" class="todo">
+<div appHighlight [ngClass]="{reminder: todo?.reminder}" class="todo">
     <h3 >{{todo?.name}} 
         <fa-icon (click)="onClickDelete(todo)" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>
     </h3>
