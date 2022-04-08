@@ -12,5 +12,11 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
       "Reminder" boolean,
     CONSTRAINT "PK_Todos" PRIMARY KEY ("Id")
 	);
+  CREATE TABLE IF NOT EXISTS "Users" (
+	    "Id_user" serial NOT NULL,
+      "Username" text NOT NULL,
+      "Password" text NOT NULL,
+    CONSTRAINT "PK_Users" PRIMARY KEY ("Id_user")
+	);
   COMMIT;
 EOSQL

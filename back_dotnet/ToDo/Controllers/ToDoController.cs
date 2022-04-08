@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using ToDo.Models;
 using Npgsql;
 using System.Data;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace ToDo.Controllers
 {
-   // [Route("api/[controller]")]
+    // [Route("api/[controller]")]
+    [Authorize]
     [Route("todoitems")]
     [ApiController]
     public class ToDoController : ControllerBase
@@ -21,7 +22,7 @@ namespace ToDo.Controllers
         private readonly TodoDb _context;
 
         //original string used for entity here only as reminder
-       // string constr = "Host=db;Port=5432;Database=tododb;Username=postgres;Password=postgres;CommandTimeout=0;";
+        // string constr = "Host=db;Port=5432;Database=tododb;Username=postgres;Password=postgres;CommandTimeout=0;";
 
         public ToDoController(TodoDb context)
         {
@@ -33,8 +34,8 @@ namespace ToDo.Controllers
         public async Task<ActionResult<IEnumerable<Todo>>> GetTodos()
         {
             //ENTITY
-           // return await _context.Todos.ToListAsync();
-           
+            // return await _context.Todos.ToListAsync();
+
             //SQL MANUAL
             List<Todo> todos = new List<Todo>();
             string query = "SELECT * FROM \"Todos\"";
@@ -44,12 +45,12 @@ namespace ToDo.Controllers
 
             while (dataReader.Read())
             {
-             
+
                 int id = int.Parse(dataReader["Id"].ToString());
                 string name = dataReader["Name"].ToString();
                 string day = dataReader["Day"].ToString();
                 bool reminder = Convert.ToBoolean(dataReader["Reminder"]);
-                
+
                 Todo todo = new Todo()
                 {
                     Id = id,
@@ -117,11 +118,11 @@ namespace ToDo.Controllers
                 $" WHERE \"Id\" = {id}";
             Database.Instance.ExecuteCommand(query);
             Database.Instance.Disconnect();
-            
+
             return NoContent();
         }
 
-        
+
         [HttpPost]
         public async Task<ActionResult<Todo>> PostTodo(Todo todo)
         {
@@ -143,11 +144,11 @@ namespace ToDo.Controllers
             Database.Instance.Disconnect();
 
             return CreatedAtAction("GetTodo", new { id = todo.Id }, todo);
-            
+
 
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(int id)
         {
@@ -171,7 +172,7 @@ namespace ToDo.Controllers
             Database.Instance.Disconnect();
 
             return NoContent();
-            
+
         }
 
         private bool TodoExists(int id)

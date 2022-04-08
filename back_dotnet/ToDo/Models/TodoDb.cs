@@ -5,12 +5,12 @@ namespace ToDo.Models
 {
     public class TodoDb : DbContext, IDataContext
     {
-        public TodoDb(DbContextOptions<TodoDb> options) : base(options){}
+        public TodoDb(DbContextOptions<TodoDb> options) : base(options) { }
 
-        public DbSet<Todo> Todos{ get; init; }
-       // public DbSet<Todo> Todos{ get; set; }
-       
+        public DbSet<Todo> Todos { get; init; }
+        // public DbSet<Todo> Todos{ get; set; }
+
         //public DbSet<Todo> Todos{ get; set; } = null!;
-       // public DbSet<Todo> Todos => Set<Todo>();
+        // public DbSet<Todo> Todos => Set<Todo>();
     }
 }
