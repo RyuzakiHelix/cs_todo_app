@@ -1,0 +1,23 @@
+<h2>test2</h2>
+<h2>test@gmail.com</h2>
+<h2>Test1234#</h2>
+<form [formGroup]="loginForm" class="add-form" autocomplete="off" novalidate (ngSubmit)="login(loginForm.value)">
+    <fieldset>
+        <legend>Login</legend>
+        <div class="form-control">
+            <label>Username:</label>
+            <input name="username" formControlName="username">
+        </div>
+        <div class="form-control">
+            <label>Email:</label>
+            <input name="email" formControlName="email">
+        </div>
+        <div class="form-control">
+            <label>Password:</label>
+            <input name="password" formControlName="password" type="password">
+        </div>
+    </fieldset>
+    <div class="form-control">
+        <button type="submit" class="btn btn-block">Login</button>
+    </div>
+</form>

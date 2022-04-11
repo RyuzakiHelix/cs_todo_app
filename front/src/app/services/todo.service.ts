@@ -17,7 +17,7 @@ export class TodoService {
   constructor(private http:HttpClient) { }
 
   //readonly apiURL='https://localhost:7221/todoitems';
-  readonly apiURL='http://localhost:7221/todoitems';
+  readonly apiURL='https://localhost:7221/todoitems';
   readonly apiURL2='http://localhost:5097/todoitems';
   formData: ToDo = new ToDo();
 
@@ -45,6 +45,7 @@ export class TodoService {
     return this.http.delete<ToDo>(apiDURL);
   }
   addToDo(todo:ToDo): Observable<ToDo>{
+    //should test pipe during return to pipe next todo...
     this.todos.next([todo]);
     return this.http.post<ToDo>(this.apiURL, todo, httpOptions);
   }
