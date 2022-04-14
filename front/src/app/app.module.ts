@@ -19,6 +19,8 @@ import { HoldableDirective } from './directives/holdable.directive';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { JwtModule } from "@auth0/angular-jwt";
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -45,6 +47,7 @@ export function tokenGetter() {
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    SocialLoginModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -53,7 +56,22 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '557622739288-8o2o91ieuhec28lssqnt8hecn8of9p7c.apps.googleusercontent.com'
+            )
+          },
+        ],
+      } as SocialAuthServiceConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

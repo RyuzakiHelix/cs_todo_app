@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using Google.Apis.Auth;
 
 namespace ToDo.Controllers
 {
@@ -81,6 +81,53 @@ namespace ToDo.Controllers
             return Unauthorized();
         }
 
+
+        [HttpPost]
+        [Route("externallogin")]
+        public async Task<IActionResult> ExternalLogin([FromBody] ExternalAuth externalAuth)
+        {
+            var payload = await VerifyGoogleToken(externalAuth);
+            if (payload == null)
+                return BadRequest("Invalid External Authentication.");
+            var info = new UserLoginInfo(externalAuth.Provider, payload.Subject, externalAuth.Provider);
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+                if (user == null)
+                {
+                    user = new IdentityUser { Email = payload.Email, UserName = payload.Email };
+                    IdentityUser newUser = new()
+                    {
+                        Email = user.Email,
+                        SecurityStamp = Guid.NewGuid().ToString(),
+                        UserName = user.UserName
+                    };
+                    await _userManager.CreateAsync(newUser);
+                    await _userManager.AddLoginAsync(newUser, info);
+                }
+                else
+                {
+                    await _userManager.AddLoginAsync(user, info);
+                }
+            }
+            if (user == null)
+                return BadRequest("Invalid External Authentication.");
+
+            var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+            var token = GetToken(authClaims);
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo
+            });
+        }
+
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:securityKey"]));
@@ -95,6 +142,25 @@ namespace ToDo.Controllers
                 );
 
             return token;
+        }
+
+
+
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalAuth externalAuth)
+        {
+            try
+            {
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { _configuration["Authentication:Google:clientId"] }
+                };
+                var payload = await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, settings);
+                return payload;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
     }

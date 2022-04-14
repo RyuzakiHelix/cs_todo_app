@@ -4,6 +4,8 @@ import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { Response } from '../models/Response';
 import { User } from '../models/User';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { SocialAuthService } from "angularx-social-login";
+import { GoogleLoginProvider } from "angularx-social-login";
 
 const httpOptions ={
   headers: new HttpHeaders({
@@ -26,7 +28,8 @@ export class AuthService {
   private isloggedin:boolean=false;
   private subject = new Subject<any>();
 
-  constructor(private http: HttpClient,private _jwtHelper: JwtHelperService) { 
+  constructor(private http: HttpClient,private _jwtHelper: JwtHelperService,private _externalAuthService: SocialAuthService) { 
+     
    // this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('token')!));
    // this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -57,8 +60,9 @@ export class AuthService {
     //return token && !this._jwtHelper.isTokenExpired(token!);
   }
 
-  readonly apiURL='https://localhost:7221/accounts/register';
-  readonly apiURL2='https://localhost:7221/accounts/login';
+  readonly apiURL='http://localhost:7221/accounts/register';
+  readonly apiURL2='http://localhost:7221/accounts/login';
+  readonly apiURL3='http://localhost:7221/accounts/externallogin';
   //route use only if not going to use above urls...
   public registerUser = (route: string, user: User) => {
     //return this.http.post<Response> (this.createCompleteRoute(route, this.apiURL), body);
@@ -96,6 +100,18 @@ export class AuthService {
     //this.currentUserSubject.next(null);
    // this.sendAuthStateChangeNotification(false);
   }
+
+  public signInWithGoogle = ()=> {
+    return this._externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+  public signOutExternal = () => {
+    this._externalAuthService.signOut();
+  }
+  public externalLogin = (route: string, user: Response) => {
+    return this.http.post<any>(this.apiURL3, user, httpOptions);
+  }
+
+
   //SAME LOGIC AS UI SERVICE, no longer needed... changed to sendauthstate...
   onlogin():Observable<any>{
     return this.subject.asObservable();

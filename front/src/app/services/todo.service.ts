@@ -17,10 +17,9 @@ export class TodoService {
   constructor(private http:HttpClient) { }
 
   //readonly apiURL='https://localhost:7221/todoitems';
-  readonly apiURL='https://localhost:7221/todoitems';
+  readonly apiURL='http://localhost:7221/todoitems';
   readonly apiURL2='http://localhost:5097/todoitems';
   formData: ToDo = new ToDo();
-
   ListToDo: ToDo[]= [];
 
   public todos = new BehaviorSubject<ToDo[]>(this.ListToDo);

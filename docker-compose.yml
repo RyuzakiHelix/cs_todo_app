@@ -19,6 +19,7 @@ services:
            # condition: service_healthy
     #networks:
      # - network
+    #command: ["dotnet", "ef", "database update"]
 
 #database
   db:

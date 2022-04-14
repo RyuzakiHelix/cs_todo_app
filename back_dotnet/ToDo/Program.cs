@@ -29,7 +29,16 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<UserContext>()
     .AddDefaultTokenProviders();
 
-// Adding Authentication
+// Adding Authentication google
+builder.Services.AddAuthentication().AddGoogle("google", opt =>
+    {
+        var googleAuth = configuration.GetSection("Authentication:Google");
+        opt.ClientId = googleAuth["ClientId"];
+        opt.ClientSecret = googleAuth["ClientSecret"];
+        opt.SignInScheme = IdentityConstants.ExternalScheme;
+    });
+
+// Adding Authentication jwt
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -76,5 +85,18 @@ app.UseCors("CORS");
 app.MapGet("/", () => "Works1");
 
 app.MapControllers();
+
+//DATABASE MIGRATION TESTING, ONLY IF NOT EXISTS...
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<UserContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 
 app.Run();

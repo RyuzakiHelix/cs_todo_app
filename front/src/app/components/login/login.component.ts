@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SocialUser } from 'angularx-social-login';
 import { first } from 'rxjs';
 import { User } from 'src/app/models/User';
+import { Response } from 'src/app/models/Response';
 import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
@@ -70,8 +72,35 @@ export class LoginComponent implements OnInit {
       this.errorMessage = error;
       this.showError = true;
     })
-    
 
+  }
+
+  public externalLogin = () => {
+    this.showError = false;
+    this._authService.signInWithGoogle()
+    .then(res => {
+      const user: SocialUser = { ...res };
+      console.log(user);
+      const externalAuth: Response = {
+        provider: user.provider,
+        token: user.idToken
+      }
+      this.validateExternalAuth(externalAuth);
+    }, error => console.log(error))
+  }
+
+  private validateExternalAuth(externalAuth: Response) {
+    this._authService.externalLogin('api/accounts/externallogin', externalAuth)
+      .subscribe(res => {
+        localStorage.setItem("token", res.token);
+        this._authService.sendAuthStateChangeNotification2(true);
+        this._router.navigate([this._returnUrl]);
+      },
+      error => {
+        this.errorMessage = error;
+        this.showError = true;
+        this._authService.signOutExternal();
+      });
   }
   
 
