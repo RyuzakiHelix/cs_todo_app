@@ -11,7 +11,9 @@ import { ErrorHandlingService } from 'src/app/services/error-handling.service';
 })
 export class RegisterComponent implements OnInit {
   public registerForm!: FormGroup;
-  error = '';
+  loginForm!: FormGroup;
+  errorMessage = '';
+  public showError?: boolean;
   submitted = false;
   constructor(private _authService: AuthService, private _errorHandling: ErrorHandlingService) { }
 
@@ -24,20 +26,22 @@ export class RegisterComponent implements OnInit {
     });
     this.registerForm.get('confirm')!.setValidators([Validators.required,
     this._errorHandling.validateConfirmPassword(this.registerForm.get('password')!)]);
+
   }
 
   
   public validateControl = (controlName: string) => {
-    return this.registerForm.controls[controlName].invalid && this.registerForm.controls[controlName].touched
+    return this.registerForm.controls[controlName].invalid && this.registerForm.controls[controlName].touched;
   }
   public hasError = (controlName: string, errorName: string) => {
-    return this.registerForm.controls[controlName].hasError(errorName)
+    return this.registerForm.controls[controlName].hasError(errorName);
   }
 
-  get f() { return this.registerForm.controls; }
+  get form() { return this.registerForm.controls; }
   
   public registerUser = (registerFormValue:any) => {
     this.submitted = true;
+    this.showError = false;
     const formValues = { ...registerFormValue };
     const user: User = {
       username: formValues.username,
@@ -45,15 +49,19 @@ export class RegisterComponent implements OnInit {
       password: formValues.password,
       confirmPassword: formValues.confirm
     };
+
     if (this.registerForm.invalid) {
       return;
     }
     this._authService.registerUser(user)
     .subscribe(_ => {
       console.log("Successful registration");
+      this.errorMessage = "Successful registration";
+      this.showError = true;
     },
     error => {
-      this.error = error;
+      this.errorMessage = error;
+      this.showError = true;
     })
 }
 

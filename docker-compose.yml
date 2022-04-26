@@ -14,9 +14,9 @@ services:
     build: back_dotnet/ToDo 
     ports:
       - "7221:80"
-    depends_on:
-         db:
-            condition: service_healthy
+    #depends_on:
+        # db:
+           # condition: service_healthy
     #networks:
      # - network
     #command: ["dotnet", "ef", "database update"]
@@ -25,11 +25,11 @@ services:
   db:
     image: postgres
     container_name: postgresdb
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "tododb", "-U", "postgres" ]
-      timeout: 45s
-      interval: 10s
-      retries: 10
+   # healthcheck:
+      #test: [ "CMD", "pg_isready", "-q", "-d", "tododb", "-U", "postgres" ]
+      #timeout: 45s
+      #interval: 10s
+      #retries: 10
     restart: always
     ports:
       - "5432:5432"

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClientModule, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 
@@ -21,6 +21,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
+import { ErrorHandlingService } from './services/error-handling.service';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -57,6 +58,11 @@ export function tokenGetter() {
     })
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlingService,
+      multi: true
+    },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

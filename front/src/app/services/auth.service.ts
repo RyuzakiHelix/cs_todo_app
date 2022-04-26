@@ -55,9 +55,9 @@ export class AuthService {
     //return token && !this._jwtHelper.isTokenExpired(token!);
   }
 
-  readonly apiURLregister='https://localhost:7221/accounts/register';
-  readonly apiURLlogin='https://localhost:7221/accounts/login';
-  readonly apiURLexterlan='https://localhost:7221/accounts/externallogin';
+  readonly apiURLregister='http://localhost:7221/accounts/register';
+  readonly apiURLlogin='http://localhost:7221/accounts/login';
+  readonly apiURLexterlan='http://localhost:7221/accounts/externallogin';
 
   public registerUser = (user: User) => {
     return this.http.post<User>(this.apiURLregister, user, httpOptions);

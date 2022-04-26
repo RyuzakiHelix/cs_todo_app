@@ -17,7 +17,7 @@ ConfigurationManager configuration = builder.Configuration;
 //builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 //builder.Services.AddDbContext<TodoDb>(opt => opt.UseNpgsql(Configuration.GetConnectionString("TodoDB")));
 
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("TodoDB")));
+builder.Services.AddDbContext<TodoDb>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TodoDB")));
 builder.Services.AddScoped<IDataContext>(provider => provider.GetService<TodoDb>());
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -25,7 +25,12 @@ builder.Services.AddControllers();
 
 //builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<UserContext>();
 builder.Services.AddDbContext<UserContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TodoDB")));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(opt => 
+    {
+        opt.Password.RequiredLength = 7;
+        opt.Password.RequireDigit = false;
+        opt.User.RequireUniqueEmail = true;
+    })
     .AddEntityFrameworkStores<UserContext>()
     .AddDefaultTokenProviders();
 
