@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
             });
             */
     
-    this._authService.loginUser('api/accounts/login', userForAuth)
+    this._authService.loginUser(userForAuth)
     .subscribe(res => {
        //localStorage.setItem("token", res.token!);
        this._authService.sendAuthStateChangeNotification2(true);
@@ -83,14 +83,14 @@ export class LoginComponent implements OnInit {
       console.log(user);
       const externalAuth: Response = {
         provider: user.provider,
-        token: user.idToken
+        idToken: user.idToken
       }
       this.validateExternalAuth(externalAuth);
     }, error => console.log(error))
   }
 
   private validateExternalAuth(externalAuth: Response) {
-    this._authService.externalLogin('api/accounts/externallogin', externalAuth)
+    this._authService.externalLogin(externalAuth)
       .subscribe(res => {
         localStorage.setItem("token", res.token);
         this._authService.sendAuthStateChangeNotification2(true);

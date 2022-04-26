@@ -87,16 +87,21 @@ app.MapGet("/", () => "Works1");
 app.MapControllers();
 
 //DATABASE MIGRATION TESTING, ONLY IF NOT EXISTS...
-
+/*
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    var context = services.GetRequiredService<UserContext>();
-    if (context.Database.GetPendingMigrations().Any())
+    var usercontext = services.GetRequiredService<UserContext>();
+    var todocontext = services.GetRequiredService<TodoDb>();
+    if (usercontext.Database.GetPendingMigrations().Any())
     {
-        context.Database.Migrate();
+        usercontext.Database.Migrate();
+    }
+     if (todocontext.Database.GetPendingMigrations().Any())
+    {
+        todocontext.Database.Migrate();
     }
 }
-
+*/
 app.Run();

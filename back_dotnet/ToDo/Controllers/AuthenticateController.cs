@@ -24,10 +24,12 @@ namespace ToDo.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IConfigurationSection _goolgeSettings;
         public AuthenticateController(UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _goolgeSettings = _configuration.GetSection("GoogleAuthSettings");
         }
 
         [HttpPost("register")]
@@ -152,7 +154,8 @@ namespace ToDo.Controllers
             {
                 var settings = new GoogleJsonWebSignature.ValidationSettings()
                 {
-                    Audience = new List<string>() { _configuration["Authentication:Google:clientId"] }
+                   // Audience = new List<string>() { _configuration["Authentication:Google:clientId"] }
+                    Audience = new List<string>() { _goolgeSettings.GetSection("clientId").Value }
                 };
                 var payload = await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, settings);
                 return payload;

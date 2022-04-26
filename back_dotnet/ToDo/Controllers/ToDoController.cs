@@ -69,7 +69,6 @@ namespace ToDo.Controllers
             return todos;
         }
 
-        //Not filtering so not really using it
         [HttpGet("{id}")]
         public async Task<ActionResult<Todo>> GetTodo(int id)
         {

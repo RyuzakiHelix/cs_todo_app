@@ -21,10 +21,10 @@ export class AuthService {
  // public currentUser: Observable<User>;
   //above or under one of them, ABOVE IS FOCUS ON USER WITH TOKEN, CHECK JWT.TS AND USERS MODULE TOKEN
   //above uses constructor+currentuservalue
+
   private _authChangeSub = new Subject<boolean>()
   public authChanged = this._authChangeSub.asObservable();
 
- // private isAuthenticated: boolean =false;
   private isloggedin:boolean=false;
   private subject = new Subject<any>();
 
@@ -37,12 +37,7 @@ export class AuthService {
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }*/
-  //TESTING 
-  public sendAuthStateChangeNotification(){
-   // this.isAuthenticated=!this.isAuthenticated;
-   // this._authChangeSub.next(this.isAuthenticated);
-  }
-  //TESTING
+
   public sendAuthStateChangeNotification2 = (isAuthenticated: boolean) => {
     this._authChangeSub.next(isAuthenticated);
     console.log("u send auth",isAuthenticated);
@@ -60,61 +55,46 @@ export class AuthService {
     //return token && !this._jwtHelper.isTokenExpired(token!);
   }
 
-  readonly apiURL='http://localhost:7221/accounts/register';
-  readonly apiURL2='http://localhost:7221/accounts/login';
-  readonly apiURL3='http://localhost:7221/accounts/externallogin';
-  //route use only if not going to use above urls...
-  public registerUser = (route: string, user: User) => {
-    //return this.http.post<Response> (this.createCompleteRoute(route, this.apiURL), body);
-    return this.http.post<User>(this.apiURL, user, httpOptions);
+  readonly apiURLregister='https://localhost:7221/accounts/register';
+  readonly apiURLlogin='https://localhost:7221/accounts/login';
+  readonly apiURLexterlan='https://localhost:7221/accounts/externallogin';
+
+  public registerUser = (user: User) => {
+    return this.http.post<User>(this.apiURLregister, user, httpOptions);
   }
-  public loginUser = (route: string, user: User) => {
-   // return this.http.post<Response>(this.apiURL2, body, httpOptions);
-    return this.http.post<any>(this.apiURL2, user, httpOptions)
+  public loginUser = (user: User) => {
+    return this.http.post<any>(this.apiURLlogin, user, httpOptions)
     .pipe(map(user => {
-     // this.sendAuthStateChangeNotification();
-      //this.sendAuthStateChangeNotification2(user.isSuccessful!);
-     // this.sendAuthStateChangeNotification2(user.isAuthSuccessful);
-     this.sendAuthStateChangeNotification2(true);
+
+      this.sendAuthStateChangeNotification2(true);
       localStorage.setItem("token", user.token);
       this.isloggedin=true;
       this.subject.next(this.isloggedin);
-      //localStorage.setItem('token', JSON.stringify(user));
-     // this.currentUserSubject.next(user);
+
       return user;
   }));
-   // return this.http.post<Response>(this.createCompleteRoute(route, this.apiURL2), body);
-   /* return this.http.post<User>(this.apiURL2, body, httpOptions)
-    .subscribe(res =>{
-      localStorage.setItem("token", res.token);
-    });
-    */
+  
   }
 
   public logout = () => {
     localStorage.removeItem("token");
-   // this.sendAuthStateChangeNotification();
-   this.sendAuthStateChangeNotification2(false);
+    this.sendAuthStateChangeNotification2(false);
     this.isloggedin=false;
     this.subject.next(this.isloggedin);
-    //this.currentUserSubject.next(null);
-   // this.sendAuthStateChangeNotification(false);
+
   }
 
   public signInWithGoogle = ()=> {
+    console.log("sign in with google");
+    console.log(this._externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID));
+
     return this._externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
   public signOutExternal = () => {
     this._externalAuthService.signOut();
   }
-  public externalLogin = (route: string, user: Response) => {
-    return this.http.post<any>(this.apiURL3, user, httpOptions);
-  }
-
-
-  //SAME LOGIC AS UI SERVICE, no longer needed... changed to sendauthstate...
-  onlogin():Observable<any>{
-    return this.subject.asObservable();
+  public externalLogin = (user: Response) => {
+    return this.http.post<any>(this.apiURLexterlan, user, httpOptions);
   }
 
 }

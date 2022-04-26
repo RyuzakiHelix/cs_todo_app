@@ -14,7 +14,7 @@ namespace ToDo.Models
     {
         private static Database instance;
 
-        private static string connectionString = "Host=db;Port=5432;Database=tododb;Username=postgres;Password=postgres;";
+        private static string connectionString = "Host=localhost;Port=5432;Database=tododb;Username=postgres;Password=postgres;";
         private static NpgsqlConnection Connection;
         public void Connect()
         {

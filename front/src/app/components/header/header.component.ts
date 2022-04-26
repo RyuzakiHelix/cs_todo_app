@@ -17,14 +17,11 @@ export class HeaderComponent implements OnInit {
   
   constructor(private uiService:UiService, private _authService: AuthService, private _router: Router) { 
     this.subscription = this.uiService.onToggle().subscribe(Value => this.showAddToDo = Value);
-    this.subscription = this._authService.onlogin().subscribe(Value => this.isloggedin = Value);
-   // this.subscription = this._authService.authChanged.subscribe(Value => this.isUserAuthenticated = Value);
     this._authService.authChanged.subscribe(Value => {this.isUserAuthenticated = Value;})
 
   }
 
   ngOnInit(): void {
-   // this.subscription = this._authService.authChanged.subscribe(Value => this.isUserAuthenticated = Value);
     this._authService.authChanged.subscribe(Value => {this.isUserAuthenticated = Value;})
   }
 

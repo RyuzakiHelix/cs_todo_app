@@ -6,6 +6,9 @@
     <div class="form-control">
         <label for="username">Username:</label>
         <input type="text"id="username" formControlName="username"/>
+        <div *ngIf="submitted && validateControl('username')" class="invalid-feedback">
+            <div *ngIf="validateControl('username')">Username is required</div>
+        </div>
     </div>
     <div class="form-control">
         <label for="email">Email:</label>
@@ -18,6 +21,11 @@
     <div class="form-control">
         <label for="confirm">Confirm Password:</label>
         <input type="password" id="confirm" formControlName="confirm"/>
+    </div>
+    <div class="form-control">
+        <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is required</em>
+        <br>
+        <em *ngIf="hasError('confirm', 'mustMatch')">Passwords must match</em>
     </div>
     <button type="submit" class="btn btn-block">Register</button>
 
